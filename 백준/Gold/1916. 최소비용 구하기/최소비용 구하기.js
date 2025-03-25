@@ -30,15 +30,13 @@ class MinHeap {
   }
 
   pop() {
-    if (this.size() === 0) {
-      return null;
-    }
-
+    if (this.size() === 0) return null;
     const min = this.items[0];
-    this.items[0] = this.items[this.size() - 1];
-    this.items.pop();
-    this.bubbleDown();
-
+    const last = this.items.pop();
+    if (this.size() > 0) {
+      this.items[0] = last;
+      this.bubbleDown();
+    }
     return min;
   }
 
@@ -48,12 +46,9 @@ class MinHeap {
 
   bubbleUp() {
     let index = this.size() - 1;
-
     while (index > 0) {
       const parentIndex = Math.floor((index - 1) / 2);
-      if (this.items[parentIndex] <= this.items[index]) {
-        break;
-      }
+      if (this.items[parentIndex][0] <= this.items[index][0]) break;
       this.swap(parentIndex, index);
       index = parentIndex;
     }
@@ -61,17 +56,14 @@ class MinHeap {
 
   bubbleDown() {
     let index = 0;
-
     while (index * 2 + 1 < this.size()) {
       let left = index * 2 + 1;
       let right = index * 2 + 2;
       let small =
-        right < this.size() && this.items[right] < this.items[left]
+        right < this.size() && this.items[right][0] < this.items[left][0]
           ? right
           : left;
-      if (this.items[small] >= this.items[index]) {
-        break;
-      }
+      if (this.items[small][0] >= this.items[index][0]) break;
       this.swap(small, index);
       index = small;
     }
@@ -80,28 +72,28 @@ class MinHeap {
 
 const distance = Array.from({ length: n + 1 }, () => Infinity);
 
-function dijkstra(x, distance) {
+function dijkstra(start) {
   const heap = new MinHeap();
-  heap.push([0, x]);
-  distance[x] = 0;
+  heap.push([0, start]);
+  distance[start] = 0;
 
   while (heap.size() > 0) {
-    const [dist, now] = heap.pop();
+    const minNode = heap.pop();
+    if (!minNode) continue;
 
-    if (distance[now] < dist) {
-      continue;
-    }
+    const [dist, now] = minNode;
+    if (distance[now] < dist) continue;
 
-    for (const i of graph[now]) {
-      let cost = dist + i[1];
-      if (cost < distance[i[0]]) {
-        distance[i[0]] = cost;
-        heap.push([cost, i[0]]);
+    for (const [next, cost] of graph[now]) {
+      let newCost = dist + cost;
+      if (newCost < distance[next]) {
+        distance[next] = newCost;
+        heap.push([newCost, next]);
       }
     }
   }
 }
 
 const [start, end] = input[input.length - 1].split(" ").map(Number);
-dijkstra(start, distance);
+dijkstra(start);
 console.log(distance[end]);
