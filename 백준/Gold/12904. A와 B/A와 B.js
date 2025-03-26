@@ -6,22 +6,29 @@ const [S, T] = require("fs")
   .split("\n")
   .map((e) => e.split(""));
 
-function sol(current) {
-  if (current.join("") === S.join("")) {
-    console.log(1);
-    process.exit(0);
+function sol(depth, result) {
+  if (depth === S.length) {
+    if (result.join("") === S.join("")) {
+      console.log(1);
+      process.exit(0);
+    }
+    return;
   }
 
-  if (current.length <= S.length) return;
-
-  if (current[current.length - 1] === "A") {
-    sol(current.slice(0, -1));
+  if (result[result.length - 1] === "A") {
+    result.pop();
+    sol(depth - 1, result);
+    result.push("A");
   }
 
-  if (current[current.length - 1] === "B") {
-    sol(current.slice(0, -1).reverse());
+  if (result[result.length - 1] === "B") {
+    result.pop();
+    result.reverse();
+    sol(depth - 1, result);
+    result.reverse();
+    result.push("B");
   }
 }
 
-sol(T);
+sol(T.length, T);
 console.log(0);
