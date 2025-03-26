@@ -17,11 +17,11 @@ let index = arr.length - 1;
 for (let day = n; day > 0; day--) {
   while (index >= 0 && arr[index][0] >= day) {
     maxHeap.push(arr[index][1]);
-    maxHeap.sort((a, b) => b - a);
+    maxHeap.sort((a, b) => a - b);
     index--;
   }
   if (maxHeap.length > 0) {
-    answer += maxHeap.shift();
+    answer += maxHeap.pop();
   }
 }
 
