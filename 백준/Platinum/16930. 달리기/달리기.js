@@ -42,13 +42,13 @@ const visited = Array.from({ length: n }, () => Array(m).fill(Infinity));
 
 function BFS(x1, y1, x2, y2) {
   const q = new Queue();
-  q.push([x1, y1, 0]);
+  q.push([x1, y1]);
   visited[x1][y1] = 0;
 
   while (!q.isEmpty()) {
-    const [x, y, moves] = q.pop();
+    const [x, y] = q.pop();
     if (x === x2 && y === y2) {
-      return moves;
+      return visited[x][y];
     }
 
     for (let i = 0; i < 4; i++) {
@@ -60,11 +60,11 @@ function BFS(x1, y1, x2, y2) {
           break;
         }
 
-        if (visited[nx][ny] < moves + 1) break;
+        if (visited[nx][ny] < visited[x][y] + 1) break;
 
         if (visited[nx][ny] === Infinity) {
-          visited[nx][ny] = moves + 1;
-          q.push([nx, ny, moves + 1]);
+          visited[nx][ny] = visited[x][y] + 1;
+          q.push([nx, ny]);
         }
       }
     }
