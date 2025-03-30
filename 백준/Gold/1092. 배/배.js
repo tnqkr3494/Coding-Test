@@ -22,6 +22,9 @@ if (crain[0] < boxes[0]) {
 while (boxes.length > 0) {
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < m; j++) {
+      if(crain[i] < boxes[boxes.length - 1]){
+          break
+      }
       if (crain[i] >= boxes[j]) {
         boxes.splice(j, 1);
         break;
