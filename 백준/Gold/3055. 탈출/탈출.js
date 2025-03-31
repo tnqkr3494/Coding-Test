@@ -7,7 +7,6 @@ const input = require("fs")
 
 const [r, c] = input.shift().split(" ").map(Number);
 const graph = [];
-let [endX, endY] = [0, 0];
 
 class Queue {
   items = [];
