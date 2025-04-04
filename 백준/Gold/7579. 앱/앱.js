@@ -25,6 +25,7 @@ for (let i = 1; i <= n; i++) {
 
     if (dp[i][j] >= m) {
       answer = Math.min(answer, j);
+      break;
     }
   }
 }
