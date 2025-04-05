@@ -41,6 +41,8 @@ for (let i = 0; i < input.length; i++) {
 }
 
 const q = new Queue();
+const visited = new Set();
+visited.add(`${redX}${redY}${blueX}${blueY}`);
 q.push([redX, redY, blueX, blueY, 0]);
 
 const path = [
@@ -53,7 +55,7 @@ const path = [
 // 벽에 부딪히면 stop, 다른 구슬에 부딪히면 stop(이게 문제)
 
 let answer = -1;
-function BFS(q) {
+function BFS(q, visited) {
   while (!q.isEmpty()) {
     const [redX, redY, blueX, blueY, time] = q.pop();
     if (time > 10) {
@@ -106,16 +108,19 @@ function BFS(q) {
             nblueY -= path[i][1];
           }
         }
-        q.push([nredX, nredY, nblueX, nblueY, time + 1]);
       } else {
         if (graph[nblueX][nblueY] === "O") {
           continue;
         }
+      }
+      if (!visited.has(`${nredX}${nredY}${nblueX}${nblueY}`)) {
         q.push([nredX, nredY, nblueX, nblueY, time + 1]);
+        visited.add(`${nredX}${nredY}${nblueX}${nblueY}`);
       }
     }
   }
+  return -1;
 }
 
-answer = BFS(q);
+answer = BFS(q, visited);
 console.log(answer);
