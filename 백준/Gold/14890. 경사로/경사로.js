@@ -24,8 +24,6 @@ function row(i) {
       if (j + l >= n) return false;
       for (let k = 1; k <= l; k++) {
         if (graph[i][j + k] !== next || visited[j + k]) return false;
-      }
-      for (let k = 1; k <= l; k++) {
         visited[j + k] = true;
       }
     } else if (curr - next === -1) {
@@ -33,8 +31,6 @@ function row(i) {
       if (j - l + 1 < 0) return false;
       for (let k = 0; k < l; k++) {
         if (graph[i][j - k] !== curr || visited[j - k]) return false;
-      }
-      for (let k = 0; k < l; k++) {
         visited[j - k] = true;
       }
     } else {
@@ -59,8 +55,6 @@ function col(i) {
       if (j + l >= n) return false;
       for (let k = 1; k <= l; k++) {
         if (graph[j + k][i] !== next || visited[j + k]) return false;
-      }
-      for (let k = 1; k <= l; k++) {
         visited[j + k] = true;
       }
     } else if (curr - next === -1) {
@@ -68,8 +62,6 @@ function col(i) {
       if (j - l + 1 < 0) return false;
       for (let k = 0; k < l; k++) {
         if (graph[j - k][i] !== curr || visited[j - k]) return false;
-      }
-      for (let k = 0; k < l; k++) {
         visited[j - k] = true;
       }
     } else {
