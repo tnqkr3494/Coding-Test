@@ -7,23 +7,42 @@ const input = require("fs")
 
 const [n, m] = input.shift().split(" ").map(Number);
 const arr = input[0].split(" ").map(Number);
+arr.sort((a, b) => a - b);
+const plus = [];
+const minus = [];
+let maxPlus = -1;
+let maxMinus = -1;
 
-const plus = arr.filter((x) => x > 0).sort((a, b) => b - a);
-const minus = arr.filter((x) => x < 0).sort((a, b) => a - b); // 음수는 오름차순
+// 가장 먼곳 제외하고 거꾸로 탐색해서 더해주기
 
-let distances = [];
-
-// 각 그룹 중 가장 먼 책의 위치를 저장
-for (let i = 0; i < plus.length; i += m) {
-  distances.push(plus[i]);
+for (const e of arr) {
+  if (e < 0) {
+    minus.push(e);
+    maxMinus = Math.max(-e, maxMinus);
+  } else {
+    plus.push(e);
+    maxPlus = Math.max(e, maxPlus);
+  }
 }
-for (let i = 0; i < minus.length; i += m) {
-  distances.push(-minus[i]); // 절대값
+
+let answer = 0;
+
+if (maxMinus < maxPlus) {
+  for (let i = 0; i < minus.length; i += m) {
+    answer += -minus[i] * 2;
+  }
+  for (let i = plus.length - m - 1; i >= 0; i -= m) {
+    answer += plus[i] * 2;
+  }
+  answer += plus[plus.length - 1];
+} else {
+  for (let i = m; i < minus.length; i += m) {
+    answer += -minus[i] * 2;
+  }
+  for (let i = plus.length - 1; i >= 0; i -= m) {
+    answer += plus[i] * 2;
+  }
+
+  answer += -minus[0];
 }
-
-// 가장 먼 거리만 단방향으로, 나머지는 왕복
-const maxDist = Math.max(...distances);
-let answer = distances.reduce((sum, d) => sum + d * 2, 0);
-answer -= maxDist;
-
 console.log(answer);
