@@ -9,15 +9,12 @@ let graph = input.map((row) => row.split(" ").map(Number));
 const paper = [0, 5, 5, 5, 5, 5];
 
 // 색종이 붙이기
-function attachPaper(startX, startY, num, graph) {
-  const newGraph = graph.map((row) => [...row]);
-
-  for (let i = startX; i < startX + num; i++) {
-    for (let j = startY; j < startY + num; j++) {
-      newGraph[i][j] = 0;
+function attach(x, y, size, value, graph) {
+  for (let i = x; i < x + size; i++) {
+    for (let j = y; j < y + size; j++) {
+      graph[i][j] = value;
     }
   }
-  return newGraph;
 }
 
 // 조건에 맞는지 check
@@ -36,44 +33,34 @@ function check(startX, startY, num, graph) {
   return true;
 }
 
-function clear(graph) {
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
-      if (graph[i][j] === 1) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
 // 재귀로 1 ~ 5까지 넣는 경우
 let answer = Infinity;
 
 function sol(depth, graph) {
-  // 색종이 전부 붙였는지 확인하기
-  if (clear(graph)) {
-    answer = Math.min(answer, depth);
-  }
+  if (depth >= answer) return;
 
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
+  let found = false;
+
+  for (let i = 0; i < 10 && !found; i++) {
+    for (let j = 0; j < 10 && !found; j++) {
       if (graph[i][j] === 1) {
-        // 색종이 넣을 수 있는지 확인하고 5가지 색종이 다 넣어보기
-        const temp = graph.map((row) => [...row]);
         for (let k = 5; k >= 1; k--) {
-          // 색종이가 남아있고, check를 통과하면
           if (paper[k] > 0 && check(i, j, k, graph)) {
-            paper[k] -= 1;
-            graph = attachPaper(i, j, k, graph);
+            paper[k]--;
+            attach(i, j, k, 0, graph);
             sol(depth + 1, graph);
-            graph = temp;
-            paper[k] += 1;
+            attach(i, j, k, 1, graph);
+            paper[k]++;
           }
         }
-        return;
+        found = true; // 여기서 색종이 붙이고 끝!
       }
     }
+  }
+
+  // 만약 1을 하나도 못 찾았다는 건 다 덮은 상태임
+  if (!found) {
+    answer = Math.min(answer, depth);
   }
 }
 
