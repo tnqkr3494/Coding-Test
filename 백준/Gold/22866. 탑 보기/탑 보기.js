@@ -84,4 +84,4 @@ for (let i = 0; i < n; i++) {
   }
 }
 
-console.log(answer.join("\n").replaceAll(",", " "));
+console.log(answer.map((arr) => arr.join(" ")).join("\n"));
