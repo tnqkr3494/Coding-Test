@@ -87,30 +87,24 @@ while (true) {
   );
 
   // 거리 미리 계산
-  for (let i = 0; i < points.length; i++) {
+  let impossible = false;
+  outer: for (let i = 0; i < points.length; i++) {
     const [sx, sy] = points[i];
     const visited = BFS(sx, sy, w, h, graph);
     for (let j = 0; j < points.length; j++) {
       const [ex, ey] = points[j];
       const d = visited[ex][ey];
-      if (d === -1) distMap[i][j] = Infinity;
-      else distMap[i][j] = d;
-    }
-  }
-
-  // 청소 불가능한 경우
-  let impossible = false;
-  outer: for (let i = 0; i < points.length; i++) {
-    for (let j = 0; j < points.length; j++) {
-      if (distMap[i][j] === Infinity) {
-        answer.push(-1);
+      if (d === -1) {
         impossible = true;
         break outer;
-      }
+      } else distMap[i][j] = d;
     }
   }
 
-  if (impossible) continue;
+  if (impossible) {
+    answer.push(-1);
+    continue;
+  }
 
   let finalResult = Infinity;
 
