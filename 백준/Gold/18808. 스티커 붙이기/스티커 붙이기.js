@@ -6,6 +6,7 @@ const input = require("fs")
   .split("\n");
 
 const [n, m, k] = input.shift().split(" ").map(Number);
+let answer = 0;
 const notebook = Array.from({ length: n }, () => Array(m).fill(0));
 
 const stickers = [];
@@ -52,6 +53,7 @@ function attach(sticker) {
           for (let l = 0; l < yLimit; l++) {
             if (sticker[k][l] === 1) {
               notebook[i + k][j + l] = 1;
+              answer++;
             }
           }
         }
@@ -75,4 +77,4 @@ for (let sticker of stickers) {
 }
 
 // 몇개 채웠는지 확인하기
-console.log(notebook.flat().reduce((sum, val) => sum + val, 0));
+console.log(answer);
