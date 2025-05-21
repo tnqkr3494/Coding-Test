@@ -23,7 +23,7 @@ function solution(queue1, queue2) {
         q2.push(queue2[i])
     }
     
-    for(let i = 0; i <= 300000; i++){
+    for(let i = 0; i <= queue1.length * 2 + 1; i++){
         if(sumQ1 === sumQ2){
             break;
         }
